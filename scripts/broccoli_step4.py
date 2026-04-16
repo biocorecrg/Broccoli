@@ -26,9 +26,9 @@ from multiprocessing import Pool as ThreadPool
 from pathlib import Path
 from scripts import utils
 try:
-    from ete3 import PhyloTree
+    from ete4 import PhyloTree
 except ImportError:
-    sys.exit("\n            ERROR: the ete3 library is not installed\n\n")
+    sys.exit("\n            ERROR: the ete4 library is not installed\n\n")
 
 
 

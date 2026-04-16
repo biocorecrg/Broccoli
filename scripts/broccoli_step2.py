@@ -33,9 +33,9 @@ from multiprocessing import Pool as ThreadPool
 from pathlib import Path
 from scripts import utils
 try:
-    from ete3 import PhyloTree
+    from ete4 import PhyloTree
 except ImportError:
-    sys.exit("\n            ERROR: the ete3 library is not installed\n\n")
+    sys.exit("\n            ERROR: the ete4 library is not installed\n\n")
 
 
 logging.basicConfig(
@@ -465,7 +465,7 @@ def process_file(file, num_splits, out_dir, list_files, path_diamond, db_dir, ma
                 if nb_pbm_tree > 100:
                     sys.exit("\n            ERROR STEP 2: too many errors in phylogenetic analyses -> stopped\n\n")
             else:
-                # import tree in ete3 and root it
+                # import tree in ete4 and root it
                 ete_tree = PhyloTree(line)
                 mid = ete_tree.get_midpoint_outgroup()
                 try:

@@ -17,8 +17,8 @@ __Reference:__ <a href="https://academic.oup.com/mbe/advance-article/doi/10.1093
 To run Broccoli, you need (see the [**manual**](manual_Broccoli_v1.2.pdf) for installation advices):
 
 - a Unix system (MacOS or Linux)
-- Python version 3.6 or above
-- <a href="https://github.com/etetoolkit/ete">ete3 library</a>
+- Python version 3.10 or above
+- <a href="https://github.com/etetoolkit/ete">ete4 library</a>
 - <a href="https://github.com/bbuchfink/diamond">Diamond</a> version 0.9.30 or above
 - <a href="http://www.microbesonline.org/fasttree/">FastTree</a> version 2.1.11 or above (**single-thread version**)
 
