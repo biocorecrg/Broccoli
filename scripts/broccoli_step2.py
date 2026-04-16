@@ -34,7 +34,7 @@ from pathlib import Path
 from scripts import utils
 try:
     from ete3 import PhyloTree
-except:
+except ImportError:
     sys.exit("\n            ERROR: the ete3 library is not installed\n\n")
 
 
@@ -202,16 +202,14 @@ def extract_HSP(full_seq, start, cig):
     hsp = ''
     position = start
     for t in l_tup:
-        # case of aa matches
-        if t[0] == 'M':
-            hsp += full_seq[position:(position + t[1])]
-            position += t[1]
-        # case of deletion
-        elif t[0] == 'D':
-            position += t[1]
-        # case of insertion
-        elif t[0] == 'I':
-            hsp += '-' * t[1]
+        match t[0]:
+            case 'M':  # aa matches
+                hsp += full_seq[position:(position + t[1])]
+                position += t[1]
+            case 'D':  # deletion
+                position += t[1]
+            case 'I':  # insertion
+                hsp += '-' * t[1]
 
     return hsp
 
@@ -400,12 +398,13 @@ def process_file(file, num_splits, out_dir, list_files, path_diamond, db_dir, ma
     all_output = None
     
     ## deal with method
-    if phylo_method == 'nj':
-        insert = '-noml -nome'
-    elif phylo_method == 'me':
-        insert = '-noml'
-    elif phylo_method == 'ml':
-        insert = ''
+    match phylo_method:
+        case 'nj':
+            insert = '-noml -nome'
+        case 'me':
+            insert = '-noml'
+        case 'ml':
+            insert = ''
 
     logger.info("phylome | %s run phylogenetic trees, n=%i..." % (file, nb_alis))
     
@@ -461,30 +460,22 @@ def process_file(file, num_splits, out_dir, list_files, path_diamond, db_dir, ma
         else:
             c += 1
             if not line.startswith('('):
-                nb_pbm_tree += 1            
+                nb_pbm_tree += 1
                 # security
                 if nb_pbm_tree > 100:
                     sys.exit("\n            ERROR STEP 2: too many errors in phylogenetic analyses -> stopped\n\n")
             else:
-                if not line.startswith('('):
-                    nb_pbm_tree += 1            
-                    # security
-                    if nb_pbm_tree > 100:
-                        sys.exit("\n            ERROR STEP 2: too many errors in phylogenetic analyses -> stopped\n\n")
-                else:
-                    # import tree in ete3 and root it
-                    ete_tree = PhyloTree(line)
-                    mid = ete_tree.get_midpoint_outgroup()
-                    try:
-                        ete_tree.set_outgroup(mid)
-                    except:
-                        pass
-                    # get reference protein name
-                    prot = all_ref_prot[c]
-                    # save rooted tree
-                    all_trees[prot] = ete_tree.write()
-    else:
-        pass
+                # import tree in ete3 and root it
+                ete_tree = PhyloTree(line)
+                mid = ete_tree.get_midpoint_outgroup()
+                try:
+                    ete_tree.set_outgroup(mid)
+                except Exception:
+                    pass
+                # get reference protein name
+                prot = all_ref_prot[c]
+                # save rooted tree
+                all_trees[prot] = ete_tree.write()
     
     ## save trees to file
     tree_file = index + '_trees.pic'

@@ -31,7 +31,7 @@ import gc
 from scripts import utils
 try:
     from ete3 import PhyloTree
-except:
+except ImportError:
     sys.exit("\n            ERROR: the ete3 library is not installed\n\n")
 
 
@@ -301,8 +301,8 @@ def extract_para(l_trees):
         content_pickle = pickle.load(open(path_tmp_para / filename, 'rb'))
         for pair in content_pickle:
             try:
-                d_para[pair] += 1 
-            except:
+                d_para[pair] += 1
+            except KeyError:
                 pass
                 
     # save it to file
@@ -397,7 +397,7 @@ def build_network():
             r_weight = int(round(20 * weight))
             try:
                 vector_weights[r_weight] += 1
-            except:
+            except IndexError:
                 print(r_weight)
             # decide to remove edge or not based on the minimum edge weight
             if weight < min_weight:
@@ -514,7 +514,7 @@ def load_search_outputs(dir_, str_):
                     # add info to network if hit is present in the network
                     if t2[0] in all_edges[query]:
                         # first time we add this target
-                        if type(all_edges[query][t2[0]]) == float: 
+                        if isinstance(all_edges[query][t2[0]], float):
                             all_edges[query][t2[0]] = (all_edges[query][t2[0]], t2[1], t2[2])
                         else:
                             start = min([all_edges[query][t2[0]][1], t2[1]])
@@ -528,8 +528,8 @@ def load_search_outputs(dir_, str_):
     # check all edges
     for node1, d in all_edges.items():
         for node2, x in d.items():
-            if type(x) == float:
-                all_edges[node1][node2] = (x, 0, 0) 
+            if isinstance(x, float):
+                all_edges[node1][node2] = (x, 0, 0)
     
     return d_other_hits           
 

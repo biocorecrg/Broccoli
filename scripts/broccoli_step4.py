@@ -27,7 +27,7 @@ from pathlib import Path
 from scripts import utils
 try:
     from ete3 import PhyloTree
-except:
+except ImportError:
     sys.exit("\n            ERROR: the ete3 library is not installed\n\n")
 
 

@@ -78,8 +78,8 @@ def parse_args():
 
 
 def check_python_version():
-    if sys.version_info[0] != 3 and sys.version_info[1] < 6:
-        sys.exit('\n            ERROR: your python is version '+ str(sys.version_info[0]) + '.' + str(sys.version_info[1]) + ', please use version 3.6+\n\n')
+    if sys.version_info < (3, 10):
+        sys.exit('\n            ERROR: your python is version '+ str(sys.version_info[0]) + '.' + str(sys.version_info[1]) + ', please use version 3.10+\n\n')
   
 
 def parse_steps(p):

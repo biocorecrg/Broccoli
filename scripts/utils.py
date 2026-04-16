@@ -11,7 +11,7 @@ def create_out_dir(dir):
     if p.exists():
         try:
             shutil.rmtree(p)
-        except:
+        except OSError:
             os.system('rm -R ' + dir)
     p.mkdir()
     return p

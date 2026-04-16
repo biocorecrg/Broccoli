@@ -101,17 +101,17 @@ def pre_checking(directory, ext):
             l_files.append( (file, os.path.getsize(directory / file)) )
             nb_seq = 0
             # check names
-            content = open(directory / file, "r")
-            for line in content:
-                if line.startswith('>'):
-                    nb_seq += 1
-                    name = line.split(' ')[0]
-                    if name in d_prot_names:
-                        # save duplicate info
-                        name2 = name.strip('\n')
-                        duplicates.append(name2.replace('>','') + '	' + d_prot_names[name] + '	' + file) 
-                    else:
-                        d_prot_names[name] = file
+            with open(directory / file, "r") as content:
+                for line in content:
+                    if line.startswith('>'):
+                        nb_seq += 1
+                        name = line.split(' ')[0]
+                        if name in d_prot_names:
+                            # save duplicate info
+                            name2 = name.strip('\n')
+                            duplicates.append(name2.replace('>','') + '	' + d_prot_names[name] + '	' + file)
+                        else:
+                            d_prot_names[name] = file
             # save nb seq
             d_nb_seq[file] = nb_seq
     
